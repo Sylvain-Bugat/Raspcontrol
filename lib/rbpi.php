@@ -15,7 +15,9 @@ class Rbpi {
 
     public static function kernel() {
         global $ssh;
-        return $ssh->shell_exec_noauth("uname -mrs");
+        $kernelVersion = $ssh->shell_exec_noauth("uname -rs");
+        $cpuDetails = $ssh->shell_exec_noauth('sed -n "/^model name/s/^model name[ \t]*: //p" /proc/cpuinfo');
+        return $kernelVersion . $cpuDetails;
     }
 
     public static function firmware() {
